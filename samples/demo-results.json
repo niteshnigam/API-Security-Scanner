@@ -1,0 +1,340 @@
+{
+  "scanId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "timestamp": "2024-12-09T10:30:00.000Z",
+  "duration": 15234,
+  "options": {
+    "scanTypes": ["SQL Injection", "XSS", "Command Injection", "Path Traversal"],
+    "maxPayloads": 5,
+    "injectLocation": "all"
+  },
+  "summary": {
+    "totalEndpoints": 5,
+    "totalTests": 75,
+    "passed": 68,
+    "failed": 7,
+    "errors": 0,
+    "vulnerabilities": [
+      {
+        "endpoint": "/api/auth/login",
+        "type": "SQL Injection",
+        "severity": "Critical",
+        "payload": "' OR '1'='1",
+        "confidence": "high"
+      },
+      {
+        "endpoint": "/api/auth/login",
+        "type": "SQL Injection",
+        "severity": "Critical",
+        "payload": "\" OR \"1\"=\"1\" --",
+        "confidence": "high"
+      },
+      {
+        "endpoint": "/api/users/search",
+        "type": "SQL Injection",
+        "severity": "Critical",
+        "payload": "' UNION SELECT * FROM users --",
+        "confidence": "medium"
+      },
+      {
+        "endpoint": "/api/products/review",
+        "type": "XSS",
+        "severity": "High",
+        "payload": "<script>alert(1)</script>",
+        "confidence": "high"
+      },
+      {
+        "endpoint": "/api/products/review",
+        "type": "XSS",
+        "severity": "High",
+        "payload": "<img src=x onerror=alert(1)>",
+        "confidence": "high"
+      },
+      {
+        "endpoint": "/api/files/download",
+        "type": "Path Traversal",
+        "severity": "High",
+        "payload": "../../../etc/passwd",
+        "confidence": "high"
+      },
+      {
+        "endpoint": "/api/system/execute",
+        "type": "Command Injection",
+        "severity": "Critical",
+        "payload": "; ls -la",
+        "confidence": "high"
+      }
+    ]
+  },
+  "endpoints": [
+    {
+      "api": "/api/auth/login",
+      "method": "POST",
+      "url": "https://api.example.com/api/auth/login",
+      "tests": [
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' OR '1'='1",
+          "injectionPoint": "Body param: username",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 145,
+          "confidence": "high",
+          "indicators": ["SQL error message detected", "Authentication bypass possible"],
+          "notes": "SQL error pattern found, authentication may be bypassed"
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "\" OR \"1\"=\"1\" --",
+          "injectionPoint": "Body param: username",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 132,
+          "confidence": "high",
+          "indicators": ["Unexpected success response"],
+          "notes": "Authentication payload returned success response"
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "'; DROP TABLE users --",
+          "injectionPoint": "Body param: username",
+          "result": "PASS",
+          "responseCode": 401,
+          "responseTime": 98,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        },
+        {
+          "type": "XSS",
+          "severity": "High",
+          "payload": "<script>alert(1)</script>",
+          "injectionPoint": "Body param: username",
+          "result": "PASS",
+          "responseCode": 401,
+          "responseTime": 87,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        },
+        {
+          "type": "Command Injection",
+          "severity": "Critical",
+          "payload": "; whoami",
+          "injectionPoint": "Body param: username",
+          "result": "PASS",
+          "responseCode": 401,
+          "responseTime": 92,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        }
+      ],
+      "summary": {
+        "total": 15,
+        "passed": 13,
+        "failed": 2,
+        "errors": 0
+      }
+    },
+    {
+      "api": "/api/users/search",
+      "method": "GET",
+      "url": "https://api.example.com/api/users/search",
+      "tests": [
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' UNION SELECT * FROM users --",
+          "injectionPoint": "Query param: q",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 234,
+          "confidence": "medium",
+          "indicators": ["Unusual data in response", "SQL error traces detected"],
+          "notes": "Response contains potential user data dump"
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' OR '1'='1",
+          "injectionPoint": "Query param: q",
+          "result": "PASS",
+          "responseCode": 200,
+          "responseTime": 112,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        },
+        {
+          "type": "XSS",
+          "severity": "High",
+          "payload": "<script>alert(1)</script>",
+          "injectionPoint": "Query param: q",
+          "result": "PASS",
+          "responseCode": 200,
+          "responseTime": 98,
+          "confidence": "low",
+          "indicators": ["Missing security headers: x-xss-protection, content-security-policy"],
+          "notes": ""
+        }
+      ],
+      "summary": {
+        "total": 15,
+        "passed": 14,
+        "failed": 1,
+        "errors": 0
+      }
+    },
+    {
+      "api": "/api/products/review",
+      "method": "POST",
+      "url": "https://api.example.com/api/products/review",
+      "tests": [
+        {
+          "type": "XSS",
+          "severity": "High",
+          "payload": "<script>alert(1)</script>",
+          "injectionPoint": "Body param: comment",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 156,
+          "confidence": "high",
+          "indicators": ["Payload reflected without sanitization", "Dangerous content: <script>"],
+          "notes": "XSS payload reflected in response without proper encoding"
+        },
+        {
+          "type": "XSS",
+          "severity": "High",
+          "payload": "<img src=x onerror=alert(1)>",
+          "injectionPoint": "Body param: comment",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 143,
+          "confidence": "high",
+          "indicators": ["Payload reflected without sanitization", "Dangerous content: onerror="],
+          "notes": "XSS payload reflected in response without proper encoding"
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' OR '1'='1",
+          "injectionPoint": "Body param: comment",
+          "result": "PASS",
+          "responseCode": 200,
+          "responseTime": 134,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        }
+      ],
+      "summary": {
+        "total": 15,
+        "passed": 13,
+        "failed": 2,
+        "errors": 0
+      }
+    },
+    {
+      "api": "/api/files/download",
+      "method": "GET",
+      "url": "https://api.example.com/api/files/download",
+      "tests": [
+        {
+          "type": "Path Traversal",
+          "severity": "High",
+          "payload": "../../../etc/passwd",
+          "injectionPoint": "Query param: path",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 87,
+          "confidence": "high",
+          "indicators": ["System/config file content detected"],
+          "notes": "File content indicator: /root:.*:0:0:/"
+        },
+        {
+          "type": "Path Traversal",
+          "severity": "High",
+          "payload": "..\\..\\..\\windows\\system.ini",
+          "injectionPoint": "Query param: path",
+          "result": "PASS",
+          "responseCode": 404,
+          "responseTime": 65,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' OR '1'='1",
+          "injectionPoint": "Query param: path",
+          "result": "PASS",
+          "responseCode": 400,
+          "responseTime": 54,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        }
+      ],
+      "summary": {
+        "total": 15,
+        "passed": 14,
+        "failed": 1,
+        "errors": 0
+      }
+    },
+    {
+      "api": "/api/system/execute",
+      "method": "POST",
+      "url": "https://api.example.com/api/system/execute",
+      "tests": [
+        {
+          "type": "Command Injection",
+          "severity": "Critical",
+          "payload": "; ls -la",
+          "injectionPoint": "Body param: command",
+          "result": "FAIL",
+          "responseCode": 200,
+          "responseTime": 312,
+          "confidence": "high",
+          "indicators": ["Command output detected in response"],
+          "notes": "Command execution indicator: /drwxr-xr-x/"
+        },
+        {
+          "type": "Command Injection",
+          "severity": "Critical",
+          "payload": "| whoami",
+          "injectionPoint": "Body param: command",
+          "result": "PASS",
+          "responseCode": 200,
+          "responseTime": 287,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        },
+        {
+          "type": "SQL Injection",
+          "severity": "Critical",
+          "payload": "' OR '1'='1",
+          "injectionPoint": "Body param: command",
+          "result": "PASS",
+          "responseCode": 200,
+          "responseTime": 234,
+          "confidence": "low",
+          "indicators": [],
+          "notes": ""
+        }
+      ],
+      "summary": {
+        "total": 15,
+        "passed": 14,
+        "failed": 1,
+        "errors": 0
+      }
+    }
+  ]
+}
+

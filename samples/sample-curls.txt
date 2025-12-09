@@ -1,0 +1,28 @@
+# Sample CURL Commands for API Security Scanner
+# Copy and paste these into the CURL input field
+
+# Login Endpoint
+curl -X POST https://api.example.com/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","password":"testpass123"}'
+
+# User Search (potentially vulnerable to SQL injection)
+curl -X GET "https://api.example.com/users/search?q=john&limit=10" \
+  -H "Authorization: Bearer your-jwt-token"
+
+# File Download (potentially vulnerable to path traversal)
+curl -X GET "https://api.example.com/files/download?path=documents/report.pdf" \
+  -H "Authorization: Bearer your-jwt-token"
+
+# Add Review (potentially vulnerable to XSS)
+curl -X POST https://api.example.com/products/review \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-jwt-token" \
+  -d '{"productId":"prod-001","rating":5,"comment":"Great product!"}'
+
+# Execute Command (potentially vulnerable to command injection)
+curl -X POST https://api.example.com/system/execute \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer your-jwt-token" \
+  -d '{"command":"ls","args":["-la"]}'
+

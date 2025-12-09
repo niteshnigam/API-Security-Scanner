@@ -1,0 +1,334 @@
+.input-panel {
+  padding: 1rem 0;
+}
+
+/* Drop Zone */
+.drop-zone {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  background: var(--bg-secondary);
+}
+
+.drop-zone:hover {
+  border-color: var(--accent-primary);
+  background: rgba(0, 245, 212, 0.03);
+}
+
+.drop-zone.active {
+  border-color: var(--accent-primary);
+  background: rgba(0, 245, 212, 0.08);
+  box-shadow: 0 0 20px rgba(0, 245, 212, 0.1);
+}
+
+.drop-zone.has-file {
+  border-color: var(--success);
+  border-style: solid;
+  background: rgba(0, 230, 118, 0.05);
+}
+
+.upload-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.drop-zone-prompt p {
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+}
+
+.drop-hint {
+  font-size: 0.85rem;
+  color: var(--text-muted) !important;
+}
+
+.drop-zone-success {
+  color: var(--success);
+}
+
+.success-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.file-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+}
+
+.file-info {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* CURL Input */
+.curl-input {
+  min-height: 200px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* Parsing Indicator */
+.parsing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+}
+
+/* Environment Variables */
+.env-vars-list {
+  margin-bottom: 1rem;
+}
+
+.env-var-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+}
+
+.env-var-key {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--accent-primary);
+  min-width: 100px;
+}
+
+.env-var-value {
+  flex: 1;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.env-var-remove {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color var(--transition-fast);
+}
+
+.env-var-remove:hover {
+  color: var(--danger);
+}
+
+.env-var-add {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.env-var-add .input-field {
+  flex: 1;
+}
+
+.env-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+}
+
+/* Endpoints List */
+.endpoint-count {
+  margin-left: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 50px;
+}
+
+.endpoints-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.endpoint-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+  transition: all var(--transition-fast);
+  flex-wrap: wrap;
+}
+
+.endpoint-item:hover {
+  background: var(--bg-hover);
+}
+
+.endpoint-url {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 200px;
+}
+
+.endpoint-meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.meta-badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+
+/* Scan Options */
+.clickable {
+  cursor: pointer;
+}
+
+.toggle-icon {
+  margin-left: auto;
+  font-size: 0.75rem;
+  transition: transform var(--transition-fast);
+}
+
+.toggle-icon.open {
+  transform: rotate(180deg);
+}
+
+.option-group {
+  margin-bottom: 1.25rem;
+}
+
+.option-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.vuln-type-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.6rem;
+}
+
+@media (max-width: 1200px) {
+  .vuln-type-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .vuln-type-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.vuln-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.6rem 0.4rem;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: center;
+  min-height: 80px;
+}
+
+.vuln-type-card:hover {
+  border-color: var(--accent-primary);
+}
+
+.vuln-type-card.selected {
+  border-color: var(--accent-primary);
+  background: rgba(0, 245, 212, 0.1);
+}
+
+.vuln-type-icon {
+  font-size: 1.2rem;
+}
+
+.vuln-type-name {
+  font-weight: 600;
+  font-size: 0.7rem;
+  line-height: 1.2;
+}
+
+.vuln-type-desc {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+/* Scan Action */
+.scan-action {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.scan-button {
+  min-width: 280px;
+}
+
+.scan-progress {
+  max-width: 400px;
+  margin: 1.5rem auto 0;
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .option-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .vuln-type-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .env-var-add {
+    flex-direction: column;
+  }
+  
+  .endpoint-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .endpoint-meta {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
